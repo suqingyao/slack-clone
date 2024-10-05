@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import { useAuthActions } from '@convex-dev/auth/react';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,8 +14,14 @@ interface SignInProps {
 }
 
 export const SignInCard = ({ setState }: SignInProps) => {
+  const { signIn } = useAuthActions();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleProviderSignIn = (value: 'github' | 'google') => {
+    signIn(value);
+  };
 
   return (
     <Card className="w-full h-full p-8">
@@ -53,7 +60,7 @@ export const SignInCard = ({ setState }: SignInProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={false}
-            onClick={() => {}}
+            onClick={() => handleProviderSignIn('google')}
             variant="outline"
             size="lg"
             className="w-full relative"
@@ -63,7 +70,7 @@ export const SignInCard = ({ setState }: SignInProps) => {
           </Button>
           <Button
             disabled={false}
-            onClick={() => {}}
+            onClick={() => handleProviderSignIn('github')}
             variant="outline"
             size="lg"
             className="w-full relative"
