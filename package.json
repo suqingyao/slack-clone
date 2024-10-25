@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 2323",
+    "dev:back": "npx convex dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
