@@ -18,6 +18,7 @@ interface SignUpProps {
 export const SignUpCard = ({ setState }: SignUpProps) => {
   const { signIn } = useAuthActions();
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -34,6 +35,7 @@ export const SignUpCard = ({ setState }: SignUpProps) => {
 
     setPending(true);
     signIn('password', {
+      name,
       email,
       password,
       flow: 'signUp',
@@ -68,6 +70,13 @@ export const SignUpCard = ({ setState }: SignUpProps) => {
           onSubmit={onPasswordSignUp}
           className="flex flex-col gap-2 space-y-2.5"
         >
+          <Input
+            disabled={pending}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Full name"
+            required
+          />
           <Input
             disabled={pending}
             value={email}
