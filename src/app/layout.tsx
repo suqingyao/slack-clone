@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { ConvexAuthNextjsServerProvider } from '@convex-dev/auth/nextjs/server';
 
 import { ConvexClientProvider } from '@/components/convex-client-provider';
+import { JotaiProvider } from '@/components/jotai-provider';
 
 import './globals.css';
 import { Modals } from '@/components/modals';
@@ -27,9 +28,11 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${inter.className} antialiased`}>
           <ConvexClientProvider>
-            {children}
-            <Modals />
-            <Toaster />
+            <JotaiProvider>
+              {children}
+              <Modals />
+              <Toaster />
+            </JotaiProvider>
           </ConvexClientProvider>
         </body>
       </html>

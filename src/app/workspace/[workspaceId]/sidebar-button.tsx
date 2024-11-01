@@ -10,7 +10,7 @@ interface SidebarButtonProps {
   isActive?: boolean;
 }
 
-const SidebarButton = ({ icon: Icon, label, isActive }: SidebarButtonProps) => {
+export const SidebarButton = ({ icon: Icon, label, isActive }: SidebarButtonProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-y-0.5 cursor-pointer group">
       <Button
@@ -23,5 +23,3 @@ const SidebarButton = ({ icon: Icon, label, isActive }: SidebarButtonProps) => {
     </div>
   );
 };
-
-export default SidebarButton;

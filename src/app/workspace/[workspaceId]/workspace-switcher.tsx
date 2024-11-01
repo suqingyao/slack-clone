@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-const WorkspaceSwitcher = () => {
+export const WorkspaceSwitcher = () => {
   const workspaceId = useWorkspaceId();
   const [_, setOpen] = useCreateWorkspaceModal();
   const router = useRouter();
@@ -72,5 +72,3 @@ const WorkspaceSwitcher = () => {
     </DropdownMenu>
   );
 };
-
-export default WorkspaceSwitcher;
