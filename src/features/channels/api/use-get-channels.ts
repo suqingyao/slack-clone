@@ -9,7 +9,7 @@ interface UseGetChannels {
 
 export const useGetChannels = ({ workspaceId }: UseGetChannels) => {
   const data = useQuery(api.channels.get, { workspaceId });
-  const isLoading = data !== undefined;
+  const isLoading = data === undefined;
 
   return {
     data,

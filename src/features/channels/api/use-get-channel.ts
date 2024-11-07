@@ -9,7 +9,7 @@ interface UseGetChannel {
 
 export const useGetChannel = ({ id }: UseGetChannel) => {
   const data = useQuery(api.channels.getById, { id });
-  const isLoading = data !== undefined;
+  const isLoading = data === undefined;
 
   return {
     data,
