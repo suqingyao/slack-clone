@@ -19,7 +19,7 @@ export const CreateWorkspaceModal = () => {
 
   const handleClose = () => {
     setOpen(false);
-    // TODO: clear form
+    setName('');
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
