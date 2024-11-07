@@ -27,6 +27,7 @@ const WorkspaceIdPage = () => {
 
   useEffect(() => {
     if (workspaceLoading || channelsLoading || memberLoading || !member || !workspace) {
+      console.log('🚀 ~ useEffect ~ channelsLoading:', channelsLoading);
       return;
     }
 
