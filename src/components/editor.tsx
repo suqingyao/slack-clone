@@ -14,7 +14,7 @@ import { Hint } from './hint';
 import { EmojiPopover } from './emoji-popover';
 import Image from 'next/image';
 
-type EditorValue = {
+export type EditorValue = {
   image: File | null;
   body: string;
 };
@@ -75,8 +75,19 @@ const Editor = ({
             enter: {
               key: 'Enter',
               handler: () => {
-                // TODO Submit form
-                return;
+                const text = quill.getText();
+                const addedImage = imageElementRef.current?.files?.[0] || null;
+
+                const isEmpty = !addedImage && text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+
+                if (isEmpty) return;
+
+                const body = JSON.stringify(quill.getContents());
+
+                submitRef.current?.({
+                  body,
+                  image: addedImage,
+                });
               },
             },
             shift_enter: {
@@ -139,7 +150,7 @@ const Editor = ({
     quill?.insertText(quill.getSelection()?.index || 0, emoji.native);
   };
 
-  const isEmpty = text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+  const isEmpty = !image && text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
   return (
     <div className="flex flex-col">
@@ -150,7 +161,12 @@ const Editor = ({
         onChange={(event) => setImage(event.target.files![0])}
         hidden
       />
-      <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm transition bg-white">
+      <div
+        className={cn(
+          'flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm transition bg-white',
+          disabled && 'opacity-50',
+        )}
+      >
         <div
           ref={containerRef}
           className="h-full ql-custom"
@@ -216,12 +232,18 @@ const Editor = ({
                 variant="outline"
                 size="sm"
                 disabled={disabled}
+                onClick={onCancel}
               >
                 Cancel
               </Button>
               <Button
                 disabled={disabled || isEmpty}
-                onClick={() => {}}
+                onClick={() => {
+                  onSubmit({
+                    body: JSON.stringify(quillRef.current?.getContents()),
+                    image,
+                  });
+                }}
                 className="bg-[#007a5a] hover:bg-[#007a5a]/80 text-white"
               >
                 Save
@@ -233,7 +255,12 @@ const Editor = ({
             <Button
               disabled={disabled || isEmpty}
               size="iconSm"
-              onClick={() => {}}
+              onClick={() => {
+                onSubmit({
+                  body: JSON.stringify(quillRef.current?.getContents()),
+                  image,
+                });
+              }}
               className={cn(
                 'ml-auto',
                 isEmpty
