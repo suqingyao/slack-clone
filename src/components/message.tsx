@@ -28,7 +28,7 @@ interface MessageProps {
   isEditing: boolean;
   isCompact?: boolean;
   setEditingId: (id: Id<'messages'> | null) => void;
-  hiddenThreadButton?: boolean;
+  hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
   threadTimestamp?: number;
@@ -52,7 +52,7 @@ export const Message = ({
   isEditing,
   isCompact = false,
   setEditingId,
-  hiddenThreadButton = false,
+  hideThreadButton = false,
   threadCount,
   threadImage,
   threadTimestamp,
