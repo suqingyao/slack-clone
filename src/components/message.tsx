@@ -4,6 +4,7 @@ import { format, isToday, isYesterday } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Hint } from './hint';
 import { Thumbnail } from './thumbnail';
+import { Toolbar } from './toolbar';
 
 import { Doc, Id } from '../../convex/_generated/dataModel';
 
@@ -106,6 +107,17 @@ export const Message = ({
           {updatedAt ? <span className="text-xs text-muted-foreground">(edited)</span> : null}
         </div>
       </div>
+      {!isEditing && (
+        <Toolbar
+          isAuthor={isAuthor}
+          isPending={false}
+          handleEdit={() => setEditingId(id)}
+          handleThread={() => {}}
+          handleDelete={() => {}}
+          handleReaction={() => {}}
+          hideThreadButton={hideThreadButton}
+        />
+      )}
     </div>
   );
 };
