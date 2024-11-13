@@ -2,7 +2,10 @@ import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
 import { format, isToday, isYesterday } from 'date-fns';
 
+import { useConfirm } from '@/hooks/use-confirm';
 import { useUpdateMessage } from '@/features/messages/api/use-update-message';
+import { useRemoveMessage } from '@/features/messages/api/use-remove-message';
+import { useToggleReaction } from '@/features/reactions/api/use-toggle-reaction';
 
 import { cn } from '@/lib/utils';
 
@@ -10,10 +13,9 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Hint } from './hint';
 import { Thumbnail } from './thumbnail';
 import { Toolbar } from './toolbar';
+import { Reactions } from './reactions';
 
 import { Doc, Id } from '../../convex/_generated/dataModel';
-import { useRemoveMessage } from '@/features/messages/api/use-remove-message';
-import { useConfirm } from '@/hooks/use-confirm';
 
 const Renderer = dynamic(() => import('@/components/renderer'), { ssr: false });
 const Editor = dynamic(() => import('@/components/editor'), { ssr: false });
@@ -24,7 +26,7 @@ interface MessageProps {
   authorImage?: string;
   authorName?: string;
   isAuthor: boolean;
-  reactions?: Array<
+  reactions: Array<
     Omit<Doc<'reactions'>, 'memberId'> & {
       count: number;
       memberIds: Id<'members'>[];
@@ -73,6 +75,7 @@ export const Message = ({
 
   const { mutate: updateMessage, isPending: isUpdatingMessage } = useUpdateMessage();
   const { mutate: removeMessage, isPending: isRemovingMessage } = useRemoveMessage();
+  const { mutate: toggleReaction, isPending: isTogglingReaction } = useToggleReaction();
 
   const isPending = isUpdatingMessage || isRemovingMessage;
 
@@ -114,6 +117,20 @@ export const Message = ({
     );
   };
 
+  const handleReaction = (value: string) => {
+    toggleReaction(
+      {
+        value,
+        messageId: id,
+      },
+      {
+        onError: () => {
+          toast.error('Failed to toggle reaction');
+        },
+      },
+    );
+  };
+
   if (isCompact) {
     return (
       <>
@@ -146,6 +163,10 @@ export const Message = ({
                 <Renderer value={body} />
                 <Thumbnail url={image} />
                 {updatedAt ? <span className="text-xs text-muted-foreground">(edited)</span> : null}
+                <Reactions
+                  data={reactions}
+                  onChange={handleReaction}
+                />
               </div>
             )}
           </div>
@@ -156,7 +177,7 @@ export const Message = ({
               handleEdit={() => setEditingId(id)}
               handleThread={() => {}}
               handleDelete={handleRemove}
-              handleReaction={() => {}}
+              handleReaction={handleReaction}
               hideThreadButton={hideThreadButton}
             />
           )}
@@ -213,6 +234,10 @@ export const Message = ({
               <Renderer value={body} />
               <Thumbnail url={image} />
               {updatedAt ? <span className="text-xs text-muted-foreground">(edited)</span> : null}
+              <Reactions
+                data={reactions}
+                onChange={handleReaction}
+              />
             </div>
           )}
         </div>
@@ -223,7 +248,7 @@ export const Message = ({
             handleEdit={() => setEditingId(id)}
             handleThread={() => {}}
             handleDelete={handleRemove}
-            handleReaction={() => {}}
+            handleReaction={handleReaction}
             hideThreadButton={hideThreadButton}
           />
         )}
