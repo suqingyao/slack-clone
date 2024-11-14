@@ -24,9 +24,9 @@ interface MessageListProps {
   canLoadMore: boolean;
 }
 
-const TIME_THRESHOLD = 5;
+export const TIME_THRESHOLD = 5;
 
-const formatDateLabel = (dateStr: string) => {
+export const formatDateLabel = (dateStr: string) => {
   const date = new Date(dateStr);
   if (isToday(date)) return 'Today';
   if (isYesterday(date)) return 'Yesterday';
