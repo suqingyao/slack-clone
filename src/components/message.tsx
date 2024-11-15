@@ -15,6 +15,7 @@ import { Hint } from './hint';
 import { Thumbnail } from './thumbnail';
 import { Toolbar } from './toolbar';
 import { Reactions } from './reactions';
+import { ThreadBar } from './thread-bar';
 
 import { Doc, Id } from '../../convex/_generated/dataModel';
 
@@ -43,6 +44,7 @@ interface MessageProps {
   hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
+  threadName?: string;
   threadTimestamp?: number;
 }
 
@@ -67,6 +69,7 @@ export const Message = ({
   hideThreadButton = false,
   threadCount,
   threadImage,
+  threadName,
   threadTimestamp,
 }: MessageProps) => {
   const { parentMessageId, onOpenMessage, onClose } = usePanel();
@@ -172,6 +175,13 @@ export const Message = ({
                   data={reactions}
                   onChange={handleReaction}
                 />
+                <ThreadBar
+                  count={threadCount}
+                  image={threadImage}
+                  name={threadName}
+                  timestamp={threadTimestamp}
+                  onClick={() => onOpenMessage(id)}
+                />
               </div>
             )}
           </div>
@@ -242,6 +252,13 @@ export const Message = ({
               <Reactions
                 data={reactions}
                 onChange={handleReaction}
+              />
+              <ThreadBar
+                count={threadCount}
+                image={threadImage}
+                name={threadName}
+                timestamp={threadTimestamp}
+                onClick={() => onOpenMessage(id)}
               />
             </div>
           )}
