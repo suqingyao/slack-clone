@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 import { Inter } from 'next/font/google';
 import { ConvexAuthNextjsServerProvider } from '@convex-dev/auth/nextjs/server';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { ConvexClientProvider } from '@/components/convex-client-provider';
 import { JotaiProvider } from '@/components/jotai-provider';
@@ -29,7 +30,7 @@ export default function RootLayout({
         <body className={`${inter.className} antialiased`}>
           <ConvexClientProvider>
             <JotaiProvider>
-              {children}
+              <NuqsAdapter>{children}</NuqsAdapter>
               <Modals />
               <Toaster />
             </JotaiProvider>

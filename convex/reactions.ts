@@ -13,7 +13,7 @@ const getMember = async (ctx: QueryCtx, workspaceId: Id<'workspaces'>, userId: I
 
 export const toggle = mutation({
   args: {
-    id: v.id('messages'),
+    messageId: v.id('messages'),
     value: v.string(),
   },
   handler: async (ctx, args) => {
@@ -23,7 +23,7 @@ export const toggle = mutation({
       throw new Error('Unauthorized');
     }
 
-    const message = await ctx.db.get(args.id);
+    const message = await ctx.db.get(args.messageId);
 
     if (!message) {
       throw new Error('Message not found');
@@ -39,7 +39,7 @@ export const toggle = mutation({
       .query('reactions')
       .filter((q) =>
         q.and(
-          q.eq(q.field('messageId'), args.id),
+          q.eq(q.field('messageId'), args.messageId),
           q.eq(q.field('memberId'), member._id),
           q.eq(q.field('value'), args.value),
         ),
