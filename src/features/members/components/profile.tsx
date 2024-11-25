@@ -203,6 +203,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
               <Button
                 variant="outline"
                 onClick={onRemove}
+                disabled={isRemovingMember}
                 className="w-full"
               >
                 Remove
@@ -213,6 +214,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
               <Button
                 variant="outline"
                 onClick={onLeave}
+                disabled={isRemovingMember}
                 className="w-full"
               >
                 Leave
